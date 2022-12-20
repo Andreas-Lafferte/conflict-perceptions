@@ -1,0 +1,101 @@
+---
+title: "Percepciones de conflicto social: El rol de la clase social y la desigualdad económica en 33 países."
+author: |
+   | \vspace{.5cm} Andreas Laffert & Juan Carlos Castillo 
+date: "`r Sys.Date()`"
+bibliography: "input/bib/tesis.bib"
+csl: "input/bib/apa.csl"
+css: "input/css/custom.css"
+abstract: El aumento de la desigualdad económica y la concentración de la riqueza se han asociado en gran medida al resurgimiento de diferentes formas de conflicto social alrededor del mundo. Diversos estudios se han preguntado por el grado en el que los individuos perciben (o no) los conflictos sociales entre grupos, particularmente entre aquellos organizados verticalmente como los ricos y los pobres o los trabajadores y los empresarios. Aunque algunas investigaciones recientes han mostrado una percepción entre moderada y fuerte del conflicto social en diferentes sociedades, además de una asociación positiva con la desigualdad económica, hasta ahora se ha desestimado considerablemente el papel de la clase social, así como su interacción con la desigualdad contextual y los marcos institucionales de los países. Este estudio pretende cubrir estos vacíos enfocándose en la influencia de la clase social sobre las percepciones de conflicto social y en la manera en que esta relación cambia según los contextos económicos e institucionales entre 1999-2019. A partir de los datos de 33 países de la [International Social Survey Programme (ISSP)](https://www.gesis.org/en/issp/modules/issp-modules-by-topic/social-inequality) en sus olas de 1999 (N = 6.175), 2009 (N = 21.932) y 2019 (N = 11.746), además de otras fuentes como [OCDE](https://data.oecd.org/economy.htm#profile-GDP%20and%20spending), [WIID](https://www.wider.unu.edu/database/world-income-inequality-database-wiid#WIIDcomp) e [ICTWSS](https://www.ictwss.org/), se estiman modelos multinivel. Los resultados revelan que la posición de clase es un determinante relevante de las percepciones de conflicto en la medida que quienes se ubican en la parte inferior de la estructura de clases tienden a percibir mayores conflictos que quienes se ubican en la parte superior, apoyando la hipótesis general. A nivel contextual, el conflicto percibido tiende a ser mayor en países con alta concentración del ingreso y menor en países con instituciones corporativistas. Sin embargo, en contra de la hipótesis de mayor polarización entre clases en contextos de mayor desigualdad, las interacciones entre niveles muestran que, cuando la desigualdad aumenta, las posiciones de clase subordinadas tienden a reducir su percepción de conflicto mientras que las clases privilegiadas la incrementan. Estos hallazgos sitúan a la dimensión subjetiva del conflicto como un eje central en su análisis, en donde la clase social continúa siendo un vehículo de polarización social en un mundo caracterizado por las persistentes desigualdades.
+output:
+  bookdown::pdf_document2:
+    template: null
+    number_sections: true
+    toc: false
+    keep_tex: false
+    pandoc_args:
+      - --template=input/mytemplate.tex 
+    # bookdown::html_document2:
+    #     number_sections: true
+    # bookdown::word_document2:
+    #     reference_docx: template.docx
+header-includes:
+  - \usepackage[spanish,es-tabla,es-nodecimaldot]{babel} # para decimales con commas en vez de punto
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \captionsetup[figure, table]{labelfont={bf},labelformat={default},labelsep=period}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{sourceserifpro}
+  - \usepackage[T1]{fontenc}
+  - \usepackage{amsmath,amssymb,amsthm,eucal,bbold,bm}
+  - \usepackage[italic,eulergreek]{mathastext}
+  - \usepackage{titling}
+  - \pretitle{\begin{center}\bfseries\LARGE} 
+  - \renewcommand{\tamark}{}
+  - \setlength{\thanksmarkwidth}{0em}
+  - \setlength{\thanksmargin}{0em}
+  - \usepackage{etoolbox}
+  - \AtBeginEnvironment{titlepage}{\setlength{\parindent}{1pt}}
+  - \usepackage{titlesec}
+  - \titleformat*{\section}{\centering\bfseries}
+  - \titleformat*{\subsection}{\bfseries}
+  - \titleformat{\paragraph}[runin]{\itshape}{}{}{}[.]
+  - \titlelabel{\thetitle.\quad}
+fontsize: 11pt
+geometry: margin=2cm
+linestretch: '1.5'
+urlcolor: blue
+link-citations: yes
+linkcolor: blue
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r render,include=FALSE, eval=FALSE}
+rmarkdown::render("paper.Rmd")
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE,
+	cache = FALSE
+)
+options(scipen=999)
+rm(list=ls())
+options(knitr.kable.NA = '')
+```
+
+# Introducción
+
+# Antecedentes conceptuales y empíricos
+
+# Método
+
+## Datos
+
+## Variables
+
+## Métodos
+
+# Resultados
+
+# Discusión y conclusiones
+
+# Referencias
+
+::: {#refs}
+:::

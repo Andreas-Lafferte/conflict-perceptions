@@ -1,0 +1,66 @@
+---
+title: "**Percepciones de conflicto social: El rol de la clase social y la desigualdad económica en 33 países**"
+author: |
+   | \vspace{.5cm} Andreas Laffert^[andreas.laffert@ug.uchile.cl]
+   | Departamento de Sociología, Universidad de Chile, Santiago, Chile.
+date: "02-08-2023"
+output:
+  pdf_document:
+    number_sections: true
+    toc: no
+bibliography: input/bib/tesis.bib
+csl: input/bib/apa.csl
+header-includes:
+    - \usepackage{graphicx}
+    - \usepackage{float}
+    - \usepackage{times}           # Times New Roman
+    - \usepackage{caption}
+    - \usepackage{graphicx}
+    - \usepackage{float}
+    - \usepackage{booktabs}
+    - \usepackage{longtable}
+    - \usepackage{array}
+    - \usepackage{multirow}
+    - \usepackage{wrapfig}
+    - \usepackage{float}
+    - \usepackage{colortbl}
+    - \usepackage{pdflscape}
+    - \usepackage{tabu}
+    - \usepackage{threeparttable}    
+geometry: margin=2cm
+linestretch: '1.0'
+urlcolor: blue
+link-citations: yes
+linkcolor: blue
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- # Summary -->
+
+# Introducción
+
+<!-- (highlighting theoretical and empirical debates on your topic and deficits in the literature that your project would address) -->
+
+
+El aumento de la desigualdad económica y la concentración de la riqueza se ha asociado en gran medida al resurgimiento de diferentes formas de conflicto social alrededor del mundo. Diversos estudios se han preguntado por el grado en el que los individuos perciben (o no) los conflictos sociales entre grupos, particularmente entre aquellos organizados verticalmente como los ricos y los pobres o los trabajadores y los empresarios [@edlundDemocraticClassStruggle2015a; @hadlerIstKlassenkonfliktUeberholt2003a; @perezahumadaClassPoliticsCollective2022; @kelleyClassClassConflict1995a]. Aunque algunos estudios recientes han demostrado una percepción entre moderada y fuerte del conflicto social en diferentes sociedades, así como una asociación positiva con la desigualdad económica [@hadlerSocialConflictPerception2017a; @hertelConflictPerceptions272019a], se ha prestado poca atención al papel de la clase social en la formación de estas percepciones. Además, preguntas sobre cómo los factores contextuales de los países, como la desigualdad económica y los marcos institucionales, pueden moderar el efecto de la clase social en la percepción de conflicto permanecen inciertas. Para cubrir estos vacíos, este estudio pretende ampliar la reacción empírica entre la clase social y las percepciones de conflicto. Específicamente, busca explorar cómo la clase social influye en las percepciones de conflicto social y cómo esta relación cambia según los contextos económicos e institucionales entre 1999-2019.
+
+Argumento en primer lugar que la clase social -relacionada con la posición en las relaciones de dominación y explotación- es un determinante relevante de las percepciones de conflicto, ya que implica intereses materiales diferentes y potencialmente enfrentados [@wrightClassCountsComparative1997a]. En este sentido, se espera que aquellos en posiciones de clase más subordinadas perciban conflictos más grandes que aquellos en posiciones de clase más privilegiadas. A nivel individual, también se sugiere que los miembros de sindicatos percibirán mayor conflicto que los no miembros [@ringqvistHowUnionMembership2020a]. Un segundo enfoque de este estudio es analizar en qué medida el vínculo entre la clase y la percepción del conflicto varía según el contexto de los países. El argumento aquí es que en países con mayor desigualdad económica habrá una mayor percepción de conflicto, al mismo tiempo que las diferencias entre las clases sociales respecto a estas percepciones serán más polarizadas. Además, a nivel institucional se espera que los conflictos percibidos sean menores en países con instituciones corporativistas más fuertes, en tanto esto genera mayor legitimidad de las normas distributivas y facilita canales de resolución de conflictos [@edlundDemocraticClassStruggle2015a].
+
+# Datos, variables y métodos
+
+Este estudio se basa en la información proporcionada por la base de datos del Módulo de Desigualdad Social de la International Social Survey Programme (ISSP) en sus tres olas realizadas en 1999 (N = 6,175), 2009 (N = 21,932) y 2019 (N = 11,746), abarcando 33 países. La percepción de conflicto se mide utilizando un índice sumativo de tres indicadores sobre la percepción de diferentes conflictos intergrupales ($\alpha$ = 0,83). La clase social se operacionaliza utilizando el esquema de clases de Wright [-@wrightClassCountsComparative1997a], así como la pertenencia a sindicatos de trabajadores. Además, se utilizan otras fuentes de datos a nivel de los países, como OCDE, WID e ICTWSS, de las cuales se obtienen medidas de desigualdad económica, como la participación del 10% más rico en los ingresos, que representa una medida de concentración de ingresos, así como el nivel de corporativismo como _proxy_ de la participación ciudadana en la discusión de las políticas públicas y el grado de balance en los recursos de poder entre los principales grupos organizados [@jahnChangingGuardTrends2016b].
+
+Dada la estructura jerárquica de los datos, los modelos se estiman en un marco multinivel considerando a los individuos anidados en países, que constituyen las unidades de segundo nivel. Estos modelos son apropiados cuando el interés es comprender cómo un resultado a nivel individual, como la percepción del conflicto, puede cambiar en función de variables tanto a nivel individual como contextual. Esto implica que estos modelos permiten estimar efectos fijos entre grupos y efectos aleatorios que varían de un grupo a otro [@bellFixedRandomEffects2019]. 
+
+# Resumen de resultados
+
+Los resultados revelan que la posición objetiva de clase se relaciona positiva y significativamente con las percepciones de conflicto social. Utilizando un enfoque neo-marxista de clase, los modelos muestran que las personas que pertenecen a posiciones de clase subordinadas, como los trabajadores no cualificados, tienden a percibir mayores conflictos sociales que aquellos que pertenecen a la clase de grandes propietarios, apoyando la primera hipótesis. Los modelos también muestran que las personas ubicadas en posiciones de clase media o "contradictorias" perciben mayor conflicto que la clase de grandes propietarios, aunque comparativamente menos que las posiciones de clase trabajadora más subordinadas. Por otro lado, los resultados indican que las personas que pertenecen a sindicatos perciben mayores conflictos que aquellos que no son miembros, presentando evidencia a favor de la segunda hipótesis.
+
+En cuanto a las variables contextuales, los modelos sugieren que la desigualdad económica, medida como la concentración de ingresos, aumenta el nivel de conflicto percibido en los individuos, apoyando la tercera hipótesis que ha sido ampliamente afirmada en investigaciones anteriores. Sin embargo, al preguntar cómo la relación entre la posición de clase y el conflicto percibido puede ser moderada por la desigualdad económica, se encuentra que esta última tiene un efecto diferencial entre las clases. Contrariamente a la hipótesis de una mayor polarización entre clases en contextos de mayor desigualdad, los resultados muestran que, cuando la desigualdad aumenta, las posiciones de clase subordinadas tienden a reducir sus percepciones de conflicto, mientras que los grandes propietarios la incrementan. Además, los resultados indican que son las clases medias las que más reducen su percepción de conflicto en relación con los grandes propietarios, ya que el efecto moderador de la desigualdad es más notable entre estas clases. Finalmente, y en línea con la quinta hipótesis, en países con instituciones corporativistas más fuertes, el nivel individual de percepción de conflicto tiende a ser menor que en países con un menor grado de corporativismo y mucho menor que en aquellos que carecen de estos canales institucionales de resolución de conflictos.
+
+
+# Referencias
+
+::: {#refs}
+:::

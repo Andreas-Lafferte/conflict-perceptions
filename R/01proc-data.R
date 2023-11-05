@@ -1,3 +1,5 @@
+# Code 1: Data preparation
+
 # 1. Packages ---------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse,
@@ -11,8 +13,10 @@ pacman::p_load(tidyverse,
                stargazer,
                magrittr,
                psych, 
-               gtsummary)
+               gtsummary,
+               datawizard)
 options(scipen=999)
+rm(list = ls())
 
 # 2. Data -----------------------------------------------------------------
 
@@ -86,14 +90,25 @@ country <- db %>% group_by(COUNTRY, YEAR) %>% tally() %>% select(-n)
 
 df <- inner_join(country, df)
 
-df <- df %>% select(COUNTRY, YEAR, CorpAll, GDP, SOC_EXPEND, TOP10)
+df <- df %>% select(COUNTRY, YEAR, CorpAll, GDP, SOC_EXPEND, TOP10) %>% ungroup()
 
 # 3.2.1 Cross-sectional and Longitudinal effects ----
+
+## Center and Z core (only 2 level data)
+
+df <- df %>% 
+  mutate(C_TOP10 = datawizard::centre(TOP10),
+         Z_TOP10 = datawizard::standardise(TOP10, center = T),
+         C_GDP = datawizard::centre(log(GDP)),
+         Z_GDP = datawizard::standardise(log(GDP), center = T),
+         C_SOC_EXPEND = datawizard::centre(SOC_EXPEND),
+         Z_SOC_EXPEND = datawizard::standardise(SOC_EXPEND, center = T)) 
 
 ## Cross-sectional effects
 
 # Country mean
-df <- df %>% group_by(COUNTRY) %>% 
+df <- df %>% 
+  group_by(COUNTRY) %>% 
   mutate(MEAN_TOP10 = mean(TOP10, na.rm = T), # MEAN TOP10
          MEAN_CorpAll = mean(CorpAll, na.rm = T), # MEAN CorpAll
          MEAN_GDP = mean(GDP, na.rm = T),
@@ -204,8 +219,9 @@ db$COUNTRY_WAVE <- do.call(paste, c(db[c("ISO_COUNTRY", "WAVE")], sep = "_"))
 
 db <- db %>% select(YEAR, COUNTRY, ISO_COUNTRY, WAVE, COUNTRY_WAVE, SEX, AGE,
                     IDEOLOGY, UNION, CLASS, EGP, ISEI, PSCi, TOP10, CorpAll, GDP, 
-                    SOC_EXPEND, TOP10_BE=MEAN_TOP10, TOP10_WE=LAG_TOP10, 
-                    GDP_BE=MEAN_GDP, GDP_WE=LAG_GDP, MEAN_CorpAll, MEAN_SOCEXPEND,
+                    SOC_EXPEND, C_TOP10, Z_TOP10, TOP10_BE=MEAN_TOP10, TOP10_WE=LAG_TOP10, 
+                    C_GDP, Z_GDP, GDP_BE=MEAN_GDP, GDP_WE=LAG_GDP, MEAN_CorpAll, MEAN_SOCEXPEND,
+                    C_SOC_EXPEND, Z_SOC_EXPEND, 
                     C_AGE, FACTOR, starts_with("CONFLICT"))
 
 db <- tibble::rowid_to_column(db, "ID_SUBJECT")
@@ -229,7 +245,7 @@ db$TOP10_WE <- sjlabelled::set_label(db$TOP10_WE, label = c("Top 10% income shar
 db$GDP_BE <- sjlabelled::set_label(db$GDP_BE, label = c("GDP Per capita [BE]"))
 db$GDP_WE <- sjlabelled::set_label(db$GDP_WE, label = c("GDP Per capita [WE]"))
 db$MEAN_CorpAll <- sjlabelled::set_label(db$MEAN_CorpAll, label = c("Indice corporativismo [CG]"))
-db$CorpAll <- sjlabelled::set_label(db$CorpAll, label = c("Indice corporativismo"))
+db$CorpAll <- sjlabelled::set_label(db$CorpAll, label = c("Indice corporativismo [Z score]"))
 db$MEAN_SOCEXPEND <- sjlabelled::set_label(db$MEAN_SOCEXPEND, label = c("Gasto social %GDP [GC]"))
 db$SOC_EXPEND <- sjlabelled::set_label(db$SOC_EXPEND, label = c("Gasto social (%GDP)"))
 db$C_AGE <- sjlabelled::set_label(db$C_AGE, label = c("Edad [CWC]"))
@@ -242,6 +258,12 @@ db$CONFLICT_RP <- sjlabelled::set_label(db$CONFLICT_RP, label = c("Conflictos: r
 db$CONFLICT_WCMC <- sjlabelled::set_label(db$CONFLICT_WCMC, label = c("Conflictos: clase obrera - clase media"))
 db$CONFLICT_MW <- sjlabelled::set_label(db$CONFLICT_MW, label = c("Conflictos: directivos - trabajadores"))
 db$ID_SUBJECT <- sjlabelled::set_label(db$ID_SUBJECT, label = c("Id persona"))
+db$C_TOP10 <- sjlabelled::set_label(db$C_TOP10, label = c("Top 10% income share [GMC]"))
+db$Z_TOP10 <- sjlabelled::set_label(db$Z_TOP10, label = c("Top 10% income share [Z score]"))
+db$C_GDP<- sjlabelled::set_label(db$C_GDP, label = c("GDP Per capita [GMC]"))
+db$Z_GDP <- sjlabelled::set_label(db$Z_GDP, label = c("GDP Per capita [Z score]"))
+db$C_SOC_EXPEND<- sjlabelled::set_label(db$C_SOC_EXPEND, label = c("Gasto social (%GDP) [GMC]"))
+db$Z_SOC_EXPEND <- sjlabelled::set_label(db$Z_SOC_EXPEND, label = c("Gasto social (%GDP) [Z score]"))
 
 # Names
 

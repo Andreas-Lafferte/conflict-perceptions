@@ -194,47 +194,36 @@ class: gris, middle center
 
 
 ---
-### Hipótesis: nivel individual
-
-
-
-
-
-`\(H_{1}\)`: Individuos de clases subordinadas tenderán a percibir mayor conflicto social que individuos de clases privilegiadas .tiny[*(Edlund &amp; Lindh, 2015; Pérez, 2022; Wright, 1997)*]
-
-
-`\(H_{2}\)`: Individuos miembros de sindicatos tenderán a percibir mayor conflicto social que individuos que no lo son .tiny[*(Ringqvist, 2020; Kerrissey &amp; Schofer, 2018)*]
+### Hipótesis
 
 
 .center[
-![:scale 60%](images/h1.jpg)
+![:scale 90%](images/esquema.png)
 ]
+---
+
+### Hipótesis: nivel individual
+
+
+.center[
+![:scale 90%](images/esquema1.png)
+]
+ 
  
 ---
 ### Hipótesis: nivel contextual
 
 
-
-`\(H_{3a}\)`: Mayores niveles de desigualdad económica aumentarán las percepciones de conflicto social en los individuos .tiny[*(Hadler, 2017; Hertel &amp; Schöneck, 2019; Karakoc, 2013)*]
-
-
-`\(H_{4}\)`: Mayores niveles de corporativismo disminuirán las percepciones de conflicto social en los individuos. .tiny[*(Ringqvist, 2020; Pérez, 2022)*]
-
 .center[
-![:scale 60%](images/h2.jpg)
+![:scale 90%](images/esquema2.png)
 ]
 
 ---
 ### Hipótesis: interacción
 
 
-
-
-`\(H_{3b}\)`: A mayores niveles de desigualdad económica, los individuos de clase trabajadora aumentarán su percepción de conflicto social, mientras que individuos de clase capitalista mantendrán o disminuirán su percepción de conflicto social .tiny[*(Andersen &amp; Curtis, 2015; Della Porta, 2015; Haddon &amp; Wu, 2021)*]
-
-
 .center[
-![:scale 70%](images/h3.jpg)
+![:scale 90%](images/esquema3.png)
 ]
 
 
@@ -246,57 +235,105 @@ background-position: 99% 1%
 ## 2. Datos, variables y métodos
 
 ---
-
-
 ### Datos
 
 &lt;div style="text-align: justify"&gt;
 
---
+.pull-left[
 
-.medium[
+.large[
+.coment[**Nivel individual**]
 
-- .bold[Nivel individual]
+- Módulo de Desigualdad Social de la [ISSP](https://www.gesis.org/en/issp/modules/issp-modules-by-topic/social-inequality) en sus olas de 1999 (*N* = 6.175), 2009 (*N* = 21.932) y 2019 (*N* = 11.746).
 
-    + Módulo de Desigualdad Social de la [ISSP](https://www.gesis.org/en/issp/modules/issp-modules-by-topic/social-inequality) en sus olas de 1999 (*N* = 6.175), 2009 (*N* = 21.932) y 2019 (*N* = 11.746), abarcando 33 países.
+- 33 países en diferentes olas.
 
-- .bold[Nivel contextual]
-
-    + [WIID](https://www.wider.unu.edu/database/world-income-inequality-database-wiid#WIIDcomp), [ICTWSS](https://www.ictwss.org/) y [OCDE](https://data.oecd.org/economy.htm#profile-GDP%20and%20spending). 
-    
-Muestra final compuesta por 39.853 individuos (nivel 1) anidados en 33 países (nivel 2).
 ]
---
 
 
-.medium[
+&lt;/br&gt;
 
+.large[
+.bold[Muestra final] compuesta por 39.853 individuos (nivel 1) anidados en 33 países (nivel 2).]
+
+]
+
+.pull-right[
+
+.large[
+.coment[**Nivel contextual**]
+
+- [WIID](https://www.wider.unu.edu/database/world-income-inequality-database-wiid#WIIDcomp)
+
+- [ICTWSS](https://www.ictwss.org/)
+
+- [OCDE](https://data.oecd.org/economy.htm#profile-GDP%20and%20spending)
+
+]
+]
+
+
+---
 
 ### Método
 
-- Modelos de regresión multinivel
+.large[
 
-    + efectos fijos y aleatorios
-    + interacciones entre niveles (pendiente aleatoria)
+.bold[Modelos de regresión multinivel]
 
+- efectos fijos y aleatorios
+- interacciones entre niveles (pendiente aleatoria)
 
 ]
+
+$$
+`\begin{aligned}
+  \operatorname{PSCi}_{i}  &amp;\sim N \left(\mu, \sigma^2 \right) \\
+    \mu &amp;=\alpha_{j[i]} + \beta_{1j[i]}(\operatorname{Clase}) + \beta_{2}(\operatorname{Sindicato}) + \beta_{3}(\operatorname{Top10})\ + \\
+&amp;\quad \beta_{4}(\operatorname{Corporativismo}) + \beta_{5}(\operatorname{Clase} \times \operatorname{Top10}) \\    
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &amp;\alpha_{j} \\
+      &amp;\beta_{1j}
+    \end{aligned}
+  \end{array}
+\right)
+  &amp;\sim N \left(
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &amp;\mu_{\alpha_{j}} \\
+      &amp;\mu_{\beta_{1j}}
+    \end{aligned}
+  \end{array}
+\right)
+, 
+\left(
+  \begin{array}{cc}
+     \sigma^2_{\alpha_{j}} &amp; \rho_{\alpha_{j}\beta_{1j}} \\ 
+     \rho_{\beta_{1j}\alpha_{j}} &amp; \sigma^2_{\beta_{1j}}
+  \end{array}
+\right)
+ \right)
+    \text{, for País j = 1,} \dots \text{,J}
+\end{aligned}`
+$$
+
+
 ---
 ### Variable dependiente 
-
-
-&lt;div style="text-align: justify"&gt;
-
-.large[
-.bold[Perceived Social Conflict Index] - `\(PSCi\)`: índice sumativo de tres indicadores sobre la percepción de conflictos. Sus valores oscilan entre 0 a 9 ( `\(\alpha\)` = 0.83), *M* = 3.78, *DE* = 2.03.
-
-]
 
 .center[
 ![:scale 80%](images/desc.png)
 ]
 
+&lt;div style="text-align: justify"&gt;
 
+.large[
+.bold[Perceived Social Conflict Index] - `\(PSCi\)`: índice sumativo de estos indicadores. Sus valores oscilan entre 0 a 9 ( `\(\alpha\)` = 0.83), *M* = 3.78, *DE* = 2.03, *ICC* = 0.22.
+
+]
 ---
 ### Variables independientes
 
@@ -341,8 +378,17 @@ Muestra final compuesta por 39.853 individuos (nivel 1) anidados en 33 países (
 
 - .bold[Nivel de corporativismo]: índice desarrollado por Jahn (2016) a partir de Visser (2019) ICTWSS. 
 
-
 ]
+
+
+
+.small[
+
+_Controles_
++ N1: edad, sexo e ideología política.
++ N2: producto interno bruto (GDP) per cápita, gasto social (% GDP)
+]
+
 ]
 
 .pull-right[
@@ -352,33 +398,6 @@ Muestra final compuesta por 39.853 individuos (nivel 1) anidados en 33 países (
 ]
 ]
 
-
----
-### Controles
-
-&lt;div style="text-align: justify"&gt;
-
-.pull-left[
-
-.large[
-.coment[**Nivel individual**]
-
-- Edad (en años)
-- Sexo (*dummy* 0 = hombre, 1 = mujer)
-- Identificación política (*nominal politómica* izquierda, centro, derecha y sin identificación)
-
-]
-]
-
-.pull-right[
-
-.large[
-.coment[**Nivel contextual**]
-
-- Producto Interno Bruto (GDP) per cápita
-- Gasto social (% GDP)
-]
-]
 ---
 class: inverse middle center, slideInRight
 background-size: 12%
@@ -551,104 +570,11 @@ background-position: 99% 1%
 ---
 ### Discusión
 
---
-
-&lt;div style="text-align: justify"&gt;
-&lt;/br&gt;
-
-.left-column[
-
-#### Posición de clase
-]
-.right-column[
-
-
-* Individuos de .bold[clases bajas/subordinadas] perciben *mayores* conflictos que indiviuos de .bold[clases altas/privilegiadas]
-
-
-* Posición en las relaciones de dominación y explotación → .bold[intereses materiales] disímiles 
+.center[
+![:scale 90%](images/discuss.png)
 
 ]
 
----
-### Discusión
-&lt;div style="text-align: justify"&gt;
-&lt;/br&gt;
-.left-column[
-#### Posición de clase
-&lt;/br&gt;
-#### Membresía sindical
-]
-
-.right-column[
-
-* .bold[Debilidad/revitalización] sindical → pérdida de centralidad
-
-* Facilitar la polarización mediante .bold[diversos recursos] → *estructurales y cognitivos*
-
-
-
-]
----
-### Discusión
-&lt;div style="text-align: justify"&gt;
-&lt;/br&gt;
-.left-column[
-#### Posición de clase
-&lt;/br&gt;
-#### Membresía sindical
-&lt;/br&gt;
-#### Desigualdad económica
-]
-
-.right-column[
-
-* A .bold[mayor concentración del ingreso, mayor percepción de conflicto], aunque varía entre países
-
-* .bold[Teorías del conficto] → mayores visiones conflictivas sobre la distribución de recursos entre poseedores y desposeídos 
-
-
-
-]
-
----
-### Discusión
-
-&lt;div style="text-align: justify"&gt;
-&lt;/br&gt;
-.left-column[
-#### Clase y desigualdad
-]
-.right-column[
-
-* El efecto de la desigualdad .bold[no es parejo entre las clases sociales] 
-
-* La .bold[desigualdad] *polariza* más en la .bold[cúspide] de la estructura social que en su parte más baja 
-
-* .bold[Teorías del riesgo] → el efecto de cambios macroeconómicos depende de los grados de .bold[aversión al riesgo]
-
-
-
-]
-
----
-### Discusión
-
-&lt;div style="text-align: justify"&gt;
-&lt;/br&gt;
-.left-column[
-#### Clase y desigualdad
-
-#### Corporativismo
-]
-.right-column[
-
-* Institucionalización del conflicto → traslado de tensiones al .bold[plano político] / mayor .bold[balance entre los recursos de poder]
-
-* Países .bold[corporativistas] v/s países .bold[pluralistas]
-
-
-]
 
 
 ---
@@ -656,21 +582,17 @@ class: gris
 
 ### Conclusiones
 
---
 
 **&lt;span style="color:yellow"&gt;1. Agenda de investigación:** dimensión subjetiva del conflicto como eje central de análisis &lt;/font&gt;
 
 
---
 
 **&lt;span style="color:yellow"&gt;2. Factores socioeconómicos:** la clase como vehículo relevante de polarización social  &lt;/font&gt;
 
---
 
 **&lt;span style="color:yellow"&gt;3. Mayor contribución empírica:** evidencia de una nueva relación entre la clase y el conflicto percibido en contextos
 de alta desigualdad &lt;/font&gt;
 
---
 
 **&lt;span style="color:yellow"&gt;4. Proyecciones:** medición, otros mecanismos de las desigualdades de clase y estudios de caso &lt;/font&gt;
 

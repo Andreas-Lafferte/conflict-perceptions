@@ -185,7 +185,6 @@ class: gris
 
 * Organizaciones sociopolíticas .tiny[*(Kerrissey & Schofer, 2018; Ringqvist, 2020)*]
 
-* Clase social (poca atención) .tiny[*(Edlund & Lindh, 2015; Pérez, 2022)*]
 ]
 ]
 
@@ -211,7 +210,8 @@ class: gris
 
 ## Este estudio
 
-<br>
+Clase social (poca atención) .tiny[*(Edlund & Lindh, 2015; Pérez, 2022)*]
+
 
 --
 
@@ -551,19 +551,9 @@ H4: ✓ .green[(β = -0.97, _p_ < .001)]]
 
 
 ---
-### Discusión
-
-.center[
-![:scale 90%](images/discuss.png)
-
-]
-
-
-
----
 class: gris
 
-### Conclusiones
+### Discusión y conclusiones
 
 
 **<span style="color:yellow">1. Agenda de investigación:** dimensión subjetiva del conflicto como eje central de análisis </font>

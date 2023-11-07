@@ -150,13 +150,6 @@ Contacto: [andreas.laffert@ug.uchile.cl](andreas.laffert@ug.uchile.cl)
 ]
 
 ---
-class: inverse middle center, slideInRight
-background-size: 12%
-background-position: 99% 1%
-
-## 1. Problema de investigación
-
----
 
 .left-column2[
 
@@ -291,13 +284,6 @@ class: gris, middle center
 
 
 ---
-class: inverse middle center, slideInRight
-background-size: 12%
-background-position: 99% 1%
-
-## 2. Datos, variables y métodos
-
----
 ### Datos
 
 <div style="text-align: justify">
@@ -349,25 +335,42 @@ background-position: 99% 1%
 
 ]
 
-```{r echo=FALSE}
-library(equatiomatic)
 
-dequa <- db %>% 
-  select(PSCi = psci, Clase=class, Sindicato=union, Top10=z_top10, Corporativismo=corp_all,
-         País=country, Ola=wave,
-         factor) %>% 
-  mutate_if(is.factor, as.numeric) %>% 
-  sample_n(size = 1000)
+$$\begin{aligned}
+  \operatorname{PSCi}_{ij} &\sim N \left(\mu, \sigma^2 \right) \\
+    \mu &= \beta_0 + \beta_1\text{Clase}_{ij} + \beta_2\text{Sindicato}_{ij} + \beta_3\text{Top10}_{j} + \beta_4\text{Corporativismo}_{j} +
+    \end{aligned}$$
+    
+$$\beta_5\text{Clase}_{ij} \times \text{Top10}_{j} + u_{0j} + u_{1j}X_{ij} + e_{ij}$$  
 
-mequa <- lmer(PSCi ~ 1 + Clase + Sindicato + 
-                Top10 + Corporativismo +
-                Top10*Clase +
-                (1 + Clase| País), data = dequa, weights = factor, REML = T)
-
-
-equatiomatic::extract_eq(mequa, 
-                         wrap = T,)
-```
+$$\begin{aligned}
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &u_{0j} \\
+      &u_{1j}
+    \end{aligned}
+  \end{array}
+\right)
+  &\sim N \left(
+\left(
+  \begin{array}{c} 
+    \begin{aligned}
+      &\mu_{u0j} \\
+      &\mu_{u1j}
+    \end{aligned}
+  \end{array}
+\right)
+, 
+\left(
+  \begin{array}{cc}
+     \sigma^2_{u0j} & \rho_{u0ju1j} \\ 
+     \rho_{u0ju1j} & \sigma^2_{u1j}
+  \end{array}
+\right)
+ \right)
+    \text{, para País j = 1,} \dots \text{, J}
+\end{aligned}$$
 
 
 ---
@@ -447,45 +450,9 @@ _Controles_
 ]
 ]
 
----
-class: inverse middle center, slideInRight
-background-size: 12%
-background-position: 99% 1%
-
-## 3. Resultados
 
 ---
-
-### Modelos - Interceptos aleatorios
-
-
-.right-columnb[
-
-.center[
-![:scale 100%](images/model1.png)
-]
-]
-
-
-<div style="text-align: justify">
-
-
-.left-columnb[
-</br>
-.mlarge[
-.bold[
-H1: ✓ .green[(β = 0.54, _p_ < .001)]]]
-
-.medium[
-.footnote[Modelo 1 (FE-nivel individual). ∗∗∗ p < 0.001; ∗∗ p < 0.01; ∗ p < 0.05]
-]
-
-]
-
-
-
----
-### Modelos - Interceptos aleatorios
+### Modelos - determinantes individuales percepción de conflictos
 
 .right-columnb[
 
@@ -504,7 +471,7 @@ H1: ✓ .green[(β = 0.54, _p_ < .001)]]]
 
 H1: ✓ .green[(β = 0.54, _p_ < .001)] 
 
-.bold[H2: ✗ .red[(β = 0.04, _p_ > .05)]]] 
+H2: ✗ .red[(β = 0.04, _p_ > .05)]] 
 
 .medium[
 .footnote[Modelo 1 (FE-nivel individual). ∗∗∗ p < 0.001; ∗∗ p < 0.01; ∗ p < 0.05]
@@ -515,33 +482,7 @@ H1: ✓ .green[(β = 0.54, _p_ < .001)]
 
 
 ---
-### Modelos - Interceptos aleatorios
-
-.right-columnb[
-
-.center[
-![:scale 100%](images/model2b.png)
-]
-]
-
-
-<div style="text-align: justify">
-</br>
-
-.left-columnb[
-
-.mlarge[
-
-.bold[H3a: ✓ .green[(β = 0.64, _p_ < .001)]]] 
-
-.medium[
-.footnote[Modelo 2 (FE-nivel individual y contextual). ∗∗∗ p < 0.001; ∗∗ p < 0.01; ∗ p < 0.05 ]
-
-]
-]
-
----
-### Modelos - Interceptos aleatorios
+### Modelos - determinantes contextuales percepción de conflictos
 
 .right-columnb[
 
@@ -559,7 +500,7 @@ H1: ✓ .green[(β = 0.54, _p_ < .001)]
 
 H3a: ✓ .green[(β = 0.64, _p_ < .001)] 
 
-.bold[H4: ✓ .green[(β = -0.97, _p_ < .001)]]] 
+H4: ✓ .green[(β = -0.97, _p_ < .001)]]
 
 .medium[
 .footnote[Modelo 2 (FE-nivel individual y contextual). ∗∗∗ p < 0.001; ∗∗ p < 0.01; ∗ p < 0.05 ]
@@ -569,7 +510,7 @@ H3a: ✓ .green[(β = 0.64, _p_ < .001)]
 
 
 ---
-### Modelos - Interacciones entre niveles
+### Modelos - interacciones entre niveles
 
 .right-columnb[
 
@@ -588,7 +529,7 @@ H3a: ✓ .green[(β = 0.64, _p_ < .001)]
 
 H3a: ✓ .green[(β = 0.64, _p_ < .001)] 
 
-.bold[H3b: ✗ .red[(β = -0.19, _p_ < .05)]] 
+H3b: ✗ .red[(β = -0.19, _p_ < .05)] 
 
 H4: ✓ .green[(β = -0.97, _p_ < .001)]] 
 
@@ -601,20 +542,13 @@ H4: ✓ .green[(β = -0.97, _p_ < .001)]]
 
 
 ---
-### Modelos - Interacciones entre niveles
+### Modelos - interacciones entre niveles
 
 .center[
 ![:scale 80%](images/interactionclasstop10.png)
 
 ]
 
-
----
-class: inverse middle center, slideInRight
-background-size: 12%
-background-position: 99% 1%
-
-## 4. Discusión y conclusiones
 
 ---
 ### Discusión
@@ -666,79 +600,4 @@ Contacto: [andreas.laffert@ug.uchile.cl](andreas.laffert@ug.uchile.cl)
 ]
 
 
----
-class: inverse middle center, slideInRight
-background-size: 12%
-background-position: 99% 1%
-
-## 6. Anexos
-
----
-#### Descriptivos - Evolución percepciones conflicto social 1999-2019
-
-
-.center[
-<img src= "images/f1.png" height="550" width="700">
-]
-
----
-### Modelos
-
-.center[
-![:scale 40%](images/tabmodelos1.png)
-]
-
----
-### Modelos
-
-.center[
-![:scale 60%](images/tabmodelos2.png)
-]
-
-
----
-### Modelos
-
-.center[
-![:scale 80%](images/interactionclasstop10_middle.png)
-]
-
-
----
-### Supuestos: multicolinealidad
-
-
-.center[
-![:scale 80%](images/multico.png)
-
-]
-
-
----
-### Planteamiento
-
-.center[
-![:scale 55%](images/pondy.JPG)
-]
-
----
-### Planteamiento: rol del tiempo
-
-Lugar exploratorio por el carácter de los datos, .bold[no central en el planteamiento teórico] 
-
-
-.content-box-gray.medium[
-
-$H_{5}$: El aumento en el tiempo incrementará la percepción de conflicto social en los individuos .tiny[*(Edlund & Lindh, 2015; Hadler, 2017)*]
-
-La evidencia no permite sostener $H_{5}$ ya que, al contrario, el conflicto percibido se reduce sistemáticamente a medida que aumenta el tiempo: 
-
-* 2009 → β = -0.43, SE = 0.03, p < .001
-* 2019 → β = -0.57, SE = 0.04, p < .001
-         
-]
-
-
-
-Limitaciones y proyecciones: formas más sofisticadas de estimar el tiempo → .bold[Modelos multinivel híbridos] .tiny[*(Schmidt-Catran & Fairbrother, 2016)*]
 

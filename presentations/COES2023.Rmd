@@ -14,7 +14,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
       ratio: '16:9'
-      beforeInit: "https://multinivel.netlify.com/docpres/xaringan_custom/macros.js"
+      beforeInit: "libs/macros.js"
       navigation:
         scroll: false #
 biblio-style: apalike

@@ -1,8 +1,8 @@
 ---
 title: "**Percepciones de conflicto social: El rol de la clase social y la desigualdad económica en 33 países**"
 author: |
-   | \vspace{.5cm} Andreas Laffert^[andreas.laffert@ug.uchile.cl]
-   | Departamento de Sociología, Universidad de Chile, Santiago, Chile.
+   | \vspace{.5cm} Andreas Laffert^[alaffertt@estudiante.uc.cl]
+   | Instituto de Sociología, Universidad de Chile, Santiago, Chile.
 date: "02-08-2023"
 output:
   pdf_document:

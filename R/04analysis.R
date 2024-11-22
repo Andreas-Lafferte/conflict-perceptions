@@ -4,21 +4,36 @@
 
 if (!require("pacman")) install.packages("pacman")
 
-pacman::p_load(tidyverse, sjmisc, sjPlot, summarytools,
-               effectsize, lme4, easystats, stargazer, 
-               influence.ME, performance, ggrepel, ggpubr,
-               broom, broomExtra, sjlabelled, RColorBrewer, 
-               texreg, car, flexplot, ggeffects, misty, optimx)
+pacman::p_load(tidyverse, 
+               sjmisc, 
+               sjPlot, 
+               lme4, 
+               easystats, 
+               influence.ME, 
+               broom.mixed, 
+               here,
+               texreg, 
+               ggeffects,
+               marginaleffects,
+               naniar,
+               ggdist,
+               Polychrome,
+               misty,
+               kableExtra,
+               sjlabelled)
 
 options(scipen=999)
 rm(list = ls())
 
+theme_set(theme_ggdist())
 # 2. Data -----------------------------------------------------------------
 
 load("output/db-proc.RData")
 
 names(db)
 sapply(db, class)
+
+sjmisc::descr(db$psci)
 
 db <- db %>% 
   mutate(egp = factor(str_squish(as.character(egp))),
@@ -37,8 +52,69 @@ db <- db %>%
                                       "Intermediate class (III+IV)",
                                       "Service class (I+II)")))
 
+
+sum(is.na(db))
+colSums(is.na(db))
+
 # 3. Analysis -------------------------------------------------------------
 
+formatter <- function(...){
+  function(x) format(round(x, 1), ...)
+}
+
+db %>% 
+     group_by(country, year) %>% 
+  summarise(promedio = round(mean(psci), digits = 1)) %>% 
+  ggplot(aes(x = year, y = promedio)) +
+  geom_line(aes(group = country), color = "#e34e0e") +
+  geom_point(aes(group = country), color = "#e34e0e") +
+  scale_x_continuous(breaks=seq(1999, 2019, 10)) +
+  scale_y_continuous(labels = formatter(nsmall = 1)) +
+  geom_hline(aes(yintercept = 3.8), linetype = "dashed", color = "grey30") +
+  labs(x = "Año", 
+       y = "Promedio PSCi")+
+  facet_wrap(.~country, ncol = 5, scales = "fixed")
+
+conf <- db %>% select(starts_with("conflict"), country) %>% 
+  mutate_at(vars(starts_with("conflict")), ~ if_else(. %in% c(0,1),0,1))
+
+rp <- conf %>% select(country, conflict_rp) %>% 
+  mutate(filtro = if_else(conflict_rp == 1, "rp", "No")) %>% 
+  group_by(country, filtro) %>% 
+  summarise(total = n()) %>% 
+  mutate(prop = prop.table(total)*100) %>% 
+  filter(filtro == "rp") %>% select(everything(), -total)
+
+mw <- conf %>% select(country, conflict_mw) %>% 
+  mutate(filtro = if_else(conflict_mw == 1, "mw", "No")) %>% 
+  group_by(country, filtro) %>% 
+  summarise(total = n()) %>% 
+  mutate(prop = prop.table(total)*100) %>% 
+  filter(filtro == "mw") %>% select(everything(), -total)
+
+wcmc <- conf %>% select(country, conflict_wcmc) %>% 
+  mutate(filtro = if_else(conflict_wcmc == 1, "wcmc", "No")) %>% 
+  group_by(country, filtro) %>% 
+  summarise(total = n()) %>% 
+  mutate(prop = prop.table(total)*100) %>% 
+  filter(filtro == "wcmc") %>% select(everything(), -total)
+
+conf_df <- rbind(rp,mw,wcmc)
+
+conf_df %>% 
+  ggplot(aes(x = prop, y = fct_reorder2(`country`, filtro, prop, .desc = T), group=filtro))+
+  geom_point(aes(shape=filtro, color=filtro), size = 2.5)+
+  scale_shape_manual(values=c(19, 17, 18))+
+  scale_color_manual(values = c("#00477b", "#8300a1", "#e34e0e"))+
+  coord_cartesian(xlim = c(0,100))+
+  scale_x_continuous(labels = function(prop){paste0(prop, "%")})+
+  labs(title = NULL,
+       y = NULL,
+       x = "Proporción intensidad conflictos",
+       color = "Tipo conflicto",
+       shape = "Tipo conflicto")+
+  theme_minimal()
+  
 # 3.1. Multilevel hybrid models ----
 
 # Null model
@@ -115,4 +191,7 @@ model_7 <- lmer(psci ~ 1 + egp + union +
                   (1 + egp| country_wave) +
                   (1 + egp| country), data = db, weights = factor, REML = T)
 
-screenreg(model_7)
+screenreg(list(model_3,model_5,model_7))
+
+
+

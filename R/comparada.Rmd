@@ -1,0 +1,119 @@
+---
+title: "Untitled"
+author: "Andreas Laffert"
+date: "2024-11-21"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      error = F, 
+                      message = F) 
+```
+
+
+
+```{r paquetes, include=FALSE}
+if (! require("pacman")) install.packages("pacman")
+
+pacman::p_load(tidyverse, 
+               magrittr,
+               sjmisc, 
+               sjPlot, 
+               lme4, 
+               easystats, 
+               influence.ME, 
+               broom.mixed, 
+               here,
+               marginaleffects,
+               ggeffects,
+               texreg, 
+               ggdist,
+               misty,
+               kableExtra,
+               cowplot,
+               patchwork)
+
+options(scipen=999)
+rm(list = ls())
+```
+
+```{r datos, include=FALSE}
+load("../output/db-proc.RData")
+
+names(db)
+sapply(db, class)
+load(file = here("output/all_models.RData")) 
+```
+
+```{r}
+# 3.1. Multilevel  models ----
+
+# Null model
+model_0 <- lmer(psci ~ 1 + (1 | country), 
+                data = db, weights = factor, REML = T)
+
+performance::icc(model_0, by_group = T)
+## ICC Country = 0.22
+
+# Model 1: Only Class
+model_1 <- lmer(psci ~ 1 + class + 
+                  (1 | country), data = db, weights = factor, REML = T)
+
+# Model 2: Class + Controls N1
+model_2 <- lmer(psci ~ 1 + class + union + (c_age)^2 + sex + ideology +
+                  (1 | country), data = db, weights = factor, REML = T)
+
+# Model 3: Class + Z_Top10 + Z_CorpAll + WAVE + Controls N1 
+model_3 <- lmer(psci ~ 1 + class + union + 
+                  z_top10 + corp_all + 
+                  (c_age)^2 + sex + ideology +
+                  (1 | country), data = db, weights = factor, REML = T)
+
+# Model 4: Class + Z_Top10 + Z_CorpAll + WAVE + Controls N1 & N2
+model_4 <- lmer(psci ~ 1 + class + union + 
+                  z_top10 + corp_all + 
+                  (c_age)^2 + sex + ideology +
+                  z_soc_expend + wave +
+                  (1 | country), data = db, weights = factor, REML = T)
+
+```
+
+
+```{r table1, results='asis'}
+
+texreg::texreg(list(model_1, model_2, model_3, model_4),
+               custom.model.names = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"),
+               caption = paste("(\\#tab:table1)","Modelos multinivel para percepciones de conflicto social"),
+               stars = c(0.05, 0.01, 0.001),
+               custom.coef.names = c("Intercepto", "2.Pequeños empleadores", "3.Pequeña burguesia", "4.Expertos directivos", "5.Expertos sin autoridad", "6.Supervisores calificados", "7.Supervisores no calificados", "8.Trabajadores calificados", "9.Trabajadores no calificados", "Miembro sindicato (ref: No)", "Edad (en años)", "Mujer (ref: Hombre)", "Centro", "Izquierda", "Sin identificación", "Participación top 10%", "Corporativismo", "Gasto social (%GDP)", "Ola 2009", "Ola 2019"), 
+                single.row = T,
+                groups = list("Posición de clase (ref: 1.Capitalistas)" = 2:9,
+                              "Identificación política (ref: Derecha)" = 13:15,
+                                                            "Tiempo (ref: 1999)" = 19:20),
+               custom.note = "\\item Nota: Celdas contienen coeficientes de regresión con errores estándares entre paréntesis. %stars \\\\ \\item Fuente: Elaboración propia en base a ISSP 1999-2019",
+               threeparttable = T,
+               leading.zero = T,
+               float.pos = "H",
+               use.packages = F,
+               booktabs = TRUE,
+               scalebox = 0.8)
+
+```
+```{r table2, results='asis'}
+texreg::texreg(list(model_6),
+               custom.model.names = c("Modelo 5"),
+               caption = paste("(\\#tab:table2)","Modelo mulinivel con interacciones entre niveles para percepciones de conflicto social, posición de clase y desigualdad económica"),
+               stars = c(0.05, 0.01, 0.001),
+                custom.coef.map = list("class2.Pequeños empleadores:z_top10" = "2.Pequeños empleadores X Participación top 10%", "class3.Pequeña burguesia:z_top10" = "3.Pequeña burguesia X Participación top 10%", "class4.Expertos directivos:z_top10" = "4.Expertos directivos X Participación top 10%", "class5.Expertos sin autoridad:z_top10" = "5.Expertos sin autoridad X Participación top 10%", "class6.Supervisores calificados:z_top10" = "6.Supervisores calificados X Participación top 10%", "class7.Supervisores no calificados:z_top10" = "7.Supervisores no calificados X Participación top 10%", "class8.Trabajadores calificados:z_top10" ="8.Trabajadores calificados X Participación top 10%", "class9.Trabajadores no calificados:z_top10" = "9.Trabajadores no calificados X Participación top 10%"),
+                groups = list("Posición de clase (ref: 1.Capitalistas X Participación top 10%)" = 1:8),
+                single.row = T,
+               custom.note = "\\item Nota: Celdas contienen coeficientes de regresión con errores estándares entre paréntesis. %stars \\\\ \\item Fuente: Elaboración propia en base a ISSP 1999-2019",
+               threeparttable = T,
+               leading.zero = T,
+               float.pos = "H",
+               use.packages = F,
+               booktabs = TRUE,
+               scalebox = 0.8)
+```

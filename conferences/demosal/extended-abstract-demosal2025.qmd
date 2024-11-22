@@ -1,0 +1,83 @@
+---
+title: "Percepciones de conflicto social: El rol de la clase social y la desigualdad económica en 33 países"
+format:
+  html: default
+  hikmah-pdf: 
+    indent: false
+author:
+  - name: Andreas Laffert
+    orcid: 0000-0002-9008-2454
+    email: alaffertt@estudiante.uc.cl
+    affiliations: Instituto de Sociología, Universidad Católica de Chile
+
+bibliography: "/Users/macbookair/Documents/GitHub/conflict-perceptions/input/bib/tesis.bib"
+csl: "/Users/macbookair/Documents/GitHub/conflict-perceptions/input/bib/apa.csl"
+link-citations: true
+linestretch: 1.15       
+fontsize: 12pt          
+geometry: "left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm"
+papersize: letter
+colorlinks: true
+fig-height: 4
+fig-width: 7.5
+---
+
+**Palabras clave**: conflicto social; percepciones de conflicto; clase social; desigualdad; análisis comparado
+
+# Introducción
+
+El aumento de la desigualdad económica y la concentración de la riqueza se ha asociado en gran medida al resurgimiento de diferentes formas de conflicto social alrededor del mundo. Además del interés por los factores económicos que caracterizan las desigualdades sociales, diversos estudios se han preguntado por el grado en el que los individuos perciben (o no) los conflictos sociales entre grupos, particularmente entre aquellos organizados verticalmente como los ricos y los pobres o los trabajadores y los empresarios [@edlundDemocraticClassStruggle2015a; @hadlerIstKlassenkonfliktUeberholt2003a; @perezahumadaClassPoliticsCollective2022; @kelleyClassClassConflict1995a]. Aunque algunos estudios recientes han demostrado una percepción entre moderada y fuerte del conflicto social en diferentes sociedades, así como una asociación positiva con la desigualdad económica [@hadlerSocialConflictPerception2017a; @hertelConflictPerceptions272019a], se ha prestado poca atención al papel de la clase social en la formación de estas percepciones. Asimismo, preguntas sobre cómo los factores contextuales de los países, como la desigualdad económica y los marcos institucionales, pueden moderar el efecto de la clase social en la percepción de conflicto permanecen inciertas. Para cubrir estos vacíos, este estudio pretende ampliar la relación empírica entre la clase social y las percepciones de conflicto abordando la siguiente pregunta de investigación: ¿En qué medida la clase social afecta las percepciones de conflicto social y cómo ha cambiado esta relación según el contexto económico e institucional de los países entre 1999-2019? 
+
+
+Argumento en primer lugar que la clase social -relacionada con la posición en las relaciones de producción y mercado- es un determinante relevante de las percepciones de conflicto, ya que implica intereses materiales diferentes y potencialmente enfrentados, además de distintas perspectivas morales respecto a la estructura social [@wrightClassCountsComparative1997a; @svallforsMoralEconomyClass2006a]. En este sentido, se espera que aquellos en posiciones de clase más subordinadas perciban conflictos más grandes que aquellos en posiciones de clase más privilegiadas. Un segundo enfoque de este estudio es analizar en qué medida el vínculo entre la clase y la percepción del conflicto varía según el contexto de los países. El argumento aquí es que en países con mayor desigualdad económica habrá una mayor percepción de conflicto, al mismo tiempo que las diferencias entre las clases sociales respecto a estas percepciones serán más polarizadas conforme aumente la desigualdad económica entre los países. Además, a nivel institucional se espera que los conflictos percibidos sean menores en países con instituciones corporativistas más fuertes, en tanto esto genera mayor legitimidad de las normas distributivas y facilita canales de resolución de conflictos [@edlundDemocraticClassStruggle2015a].
+
+# Datos, variables y métodos
+
+## Datos
+
+Este estudio se basa en la información proporcionada por la base de datos del Módulo de Desigualdad Social de la International Social Survey Programme (ISSP) en sus tres olas realizadas en los años 1999 (N = 6.175), 2009 (N = 21.932) y 2019 (N = 11.746). Además, se utilizan otras fuentes de datos secundarias como OCDE, WID e ICTWSS, que proveen información contextual de variables institucionales, económicas y laborales de diversos países. Luego del procesamiento de variables y de la eliminación de casos pérdidos, la base de datos final de este estudio incluye una muestra estratificada en tres niveles, compuesta por 39.684 individuos (nivel 1), anidados en 58 unidades países-años o encuestas (nivel 2), anidados en 33 países (nivel 3).
+
+
+## Variables
+
+**Variable dependiente**
+
+La variable dependiente de este estudio es la percepción de conflicto social. Este constructo se mide a través de tres indicadores que abordan la percepción de conflictos entre: ricos y pobres, la clase media y la clase trabajadora, y los trabajadores y los directivos. La percepción de estos diferentes conflictos intergrupales se mide a partir del ítem: «En todos los países hay diferencias o incluso conflictos entre los distintos grupos sociales. En su opinión, en el país de referencia ¿cuánto conflicto hay entre…?». En todos los casos, los encuestados responden en una escala Likert que va desde “no existen conflictos” (1) hasta “conflictos muy fuertos” (4). Siguiendo la misma estrategia que estudios previos [@hadlerSocialConflictPerception2017a; @hertelConflictPerceptions272019a], estos indicadores fueron recodificados en un rango de valores de 0 a 3, para luego crear un índice sumativo de 0 a 9 ($\alpha$ = 0,83).
+
+
+**Variables independientes - nivel individual**
+
+La clase social se operacionaliza utilizando el esquema de clases de Erikson-Goldthorpe-Portocarrero (EGP) [@eriksonCASMINProjectAmerican1992].El esquema EGP es una de las medidas más consistentes y validadas para analizar posiciones de clase en investigaciones comparadas y ha demostrado su validez tanto en sociedades industrializadas y de industrialización tardía [@barozet_measurement_2021]. La información sobre ocupaciones, estatus de trabajo por cuenta propia y número de empleados se utiliza para clasificar a los encuestados en seis posiciones de clase. Siguiendo investigaciones previas, se emplea una versión simplificada del esquema de clases EGP que agrupa tres clases [@edlundDemocraticClassStruggle2015a]. Específicamente, esta versión distingue entre la Clase de Servicio (directivos y profesionales superiores e inferiores), la Clase Intermedia (trabajadores no manuales rutinarios y autónomos) y la Clase Trabajadora (supervisores manuales, trabajadores manuales calificados y no calificados).
+
+**Variables independientes - nivel contextual**
+
+Para medir la desigualdad económica de los países, empleo la participación del 10% más rico en la distribución del ingreso. Este indicador, que refleja la concentración de los ingresos, representando el porcentaje promedio que captura el 10% más rico en la distribución de los ingresos [@chancelWorldInequalityReport2022]. El nivel de corporativismo, como un _proxy_ de la participación ciudadana en la discusión de las políticas públicas y el grado de balance en los recursos de poder entre los principales grupos organizados, se mide a través del índice desarrollado por Jahn [-@jahnChangingGuardTrends2016b] a partir de la base de datos ICTWSS. Este es un índice sumativo se basa en los puntajes estandarizados de 8 indicadores que dan cuenta de las dimensiones estructurales, funcionales y de alcance del corporativismo [@jahnChangingGuardTrends2016b].
+
+## Métodos
+
+En vista de que la base de datos posee una estructura de encuestas longitudinales comparativas [@schmidt-catranRandomEffectsMultilevel2016], los modelos se estiman en un marco multinivel híbrido. En estos modelos los individuos encuestados en las diferentes olas son anidados tanto en países como en años (1999/2009/2019). Esto implica que el diseño multinivel de esta investigación distingue tres niveles: *individuos* = nivel 1; *año-país* = nivel 2; y *país* = nivel 3. En detalle, en estos modelos cada encuestado/individuo (nivel 1) es observado en un país específico y en un momento específico (nivel 2), y cada año-país es una única observación de un país (nivel 3) que se observa repetidas veces [@fairbrotherTwoMultilevelModeling2014]. Esta estructura de tres niveles permite distinguir entre los efectos transversales de los países (nivel 3) y los efectos longitudinales dentro de los países (nivel 2). Además, incorpora efectos aleatorios en dichos niveles, lo cual es especialmente recomendable cuando se estudian países ya que disminuye la heterogeneidad no observada entre estos grupos [@schmidt-catranMultilevelModelsAnalysis2019].
+
+
+# Resumen de resultados
+
+Los resultados revelan que la posición objetiva de clase se relaciona positiva y significativamente con las percepciones de conflicto social. Los modelos muestran que las personas que pertenecen a posiciones de clase subordinadas, como los trabajadores no cualificados, tienden a percibir mayores conflictos sociales que aquellos que pertenecen a la clase de servicios, apoyando la primera hipótesis. Los modelos también muestran que las personas ubicadas en posiciones de clase intermedia o "contradictorias" perciben mayor conflicto que la clase de servicios, aunque comparativamente menos que las posiciones de clase trabajadora más subordinadas. 
+
+En cuanto a las variables contextuales, los
+resultados sugieren que la desigualdad económica incrementa el nivel de conflicto percibido en los individuos _entre_ países. Además, el aumento de la desigualdad económica _dentro_ de los países en el tiempo también se asocia con una mayor percepción de conflicto a nivel individual. Sin embargo, al preguntar cómo la relación entre la posición de clase y el conflicto percibido puede ser moderada por la desigualdad económica, se encuentra que esta última tiene un efecto diferencial entre las clases. Contrariamente a la hipótesis de una mayor polarización entre clases en contextos de mayor desigualdad, los resultados muestran que, cuando la desigualdad _entre_ países aumenta, las posiciones de clase trabajadora tienden a reducir sus percepciones de conflicto, mientras que las personas de la clase de servicios la incrementan. 
+Finalmente, en países con instituciones corporativistas más fuertes, el nivel individual de percepción de conflicto no tiende a ser menor que en países con un menor grado de corporativismo, lo que va en contra de lo planteado hipóteticamente y discute con los hallazgos en la literatura previa. 
+
+# Referencias
+
+::: {#refs}
+:::
+
+```{r}
+#| echo: false
+#| label: wordstats
+#| warning: false
+#| message: false
+wordcount <- wordcountaddin::text_stats('extended-abstract-demosal2025.qmd')
+words <- substr(wordcount[3], start=19, stop=29)
+```
+
+**Word count**: `r words`

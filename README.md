@@ -23,4 +23,4 @@ This repository is based on the IPO protocol ([Castillo, 2020](https://juancarlo
 
 ## Presentations
 
-- [Presentación VIII Seminario Internacional DEMOSAL](https://andreas-lafferte.github.io/conflict-perceptions/presentation/DEMOSAL2025.html)
+- [Presentación VIII Seminario Internacional DEMOSAL](https://andreas-lafferte.github.io/conflict-perceptions/presentations/DEMOSAL2025.html)

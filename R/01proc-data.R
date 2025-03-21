@@ -142,7 +142,7 @@ db <- db %>% select(everything(), -DEGREE, -SUBJEC_CLASS, -INCOME, -CONFLICT_TB,
 
 db <- db %>% na.omit()
 
-db <- left_join(db, db_original[,c(1,12,13)], by = "ID_SUBJECT")
+db <- left_join(db, db_original[,c(1,6,12)], by = "ID_SUBJECT")
 
 df_original <- df
 
@@ -150,16 +150,6 @@ df <- df %>% na.omit()
 df <- df %>% filter(!COUNTRY %in% c("Japon", "Canada", "Irlanda"))
 df <- df %>% as_tibble(.)
 
-
-# 3.4 Transforming variables ----
-
-## AGE center CWC (group mean)
-
-db <- db %>% group_by(COUNTRY) %>% 
-  mutate(mean.age = mean(AGE, na.rm = T)) %>% 
-  ungroup() %>% 
-  group_by(COUNTRY) %>% 
-  mutate(C_AGE = AGE - mean.age)
 
 # 3.5 Identification variables ----
 
@@ -218,11 +208,10 @@ db$COUNTRY_WAVE <- do.call(paste, c(db[c("ISO_COUNTRY", "WAVE")], sep = "_"))
 # 3.6 Final data ----
 
 db <- db %>% select(YEAR, COUNTRY, ISO_COUNTRY, WAVE, COUNTRY_WAVE, SEX, AGE,
-                    IDEOLOGY, UNION, CLASS, EGP, ISEI, PSCi, TOP10, CorpAll, GDP, 
+                    IDEOLOGY, UNION, DEGREE, CLASS, EGP, PSCi, TOP10, CorpAll, GDP, 
                     SOC_EXPEND, C_TOP10, Z_TOP10, TOP10_BE=MEAN_TOP10, TOP10_WE=LAG_TOP10, 
                     C_GDP, Z_GDP, GDP_BE=MEAN_GDP, GDP_WE=LAG_GDP, MEAN_CorpAll, MEAN_SOCEXPEND,
-                    C_SOC_EXPEND, Z_SOC_EXPEND, 
-                    C_AGE, FACTOR, starts_with("CONFLICT"))
+                    C_SOC_EXPEND, Z_SOC_EXPEND, FACTOR, starts_with("CONFLICT"))
 
 db <- tibble::rowid_to_column(db, "ID_SUBJECT")
 db <- db %>% as_tibble(.)
@@ -234,9 +223,9 @@ db$SEX <- sjlabelled::set_label(db$SEX, label = c("Sexo"))
 db$AGE <- sjlabelled::set_label(db$AGE, label = c("Edad"))
 db$UNION <- sjlabelled::set_label(db$UNION, label = c("Afiliación sindical"))
 db$IDEOLOGY <- sjlabelled::set_label(db$IDEOLOGY, label = c("Identificación política"))
+db$DEGREE <- sjlabelled::set_label(db$DEGREE, label = c("Nivel educacional"))
 db$CLASS <- sjlabelled::set_label(db$CLASS, label = c("Posición de clase EOW"))
 db$EGP <- sjlabelled::set_label(db$EGP, label = c("Posición de clase EGP"))
-db$ISEI <- sjlabelled::set_label(db$ISEI, label = c("International Socio-Economic Index of occupational status"))
 db$ISO_COUNTRY <- sjlabelled::set_label(db$ISO_COUNTRY, label = c("Código ISO país"))
 db$WAVE <- sjlabelled::set_label(db$WAVE, label = c("Ola"))
 db$COUNTRY_WAVE <- sjlabelled::set_label(db$COUNTRY_WAVE, label = c("País-ola"))
@@ -248,7 +237,6 @@ db$MEAN_CorpAll <- sjlabelled::set_label(db$MEAN_CorpAll, label = c("Indice corp
 db$CorpAll <- sjlabelled::set_label(db$CorpAll, label = c("Indice corporativismo [Z score]"))
 db$MEAN_SOCEXPEND <- sjlabelled::set_label(db$MEAN_SOCEXPEND, label = c("Gasto social %GDP [GC]"))
 db$SOC_EXPEND <- sjlabelled::set_label(db$SOC_EXPEND, label = c("Gasto social (%GDP)"))
-db$C_AGE <- sjlabelled::set_label(db$C_AGE, label = c("Edad [CWC]"))
 db$FACTOR <- sjlabelled::set_label(db$FACTOR, label = c("Factor expansión"))
 db$COUNTRY <- sjlabelled::set_label(db$COUNTRY, label = c("País"))
 db$PSCi <- sjlabelled::set_label(db$PSCi, label = c("Perceived Social Conflict Index"))

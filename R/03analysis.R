@@ -7,8 +7,8 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, sjmisc, sjPlot, summarytools,
                effectsize, lme4, easystats, stargazer, 
                influence.ME, performance, ggrepel, ggpubr,
-               broom, broomExtra, sjlabelled, RColorBrewer, 
-               texreg, car, flexplot, ggeffects, misty, optimx)
+               broom, broom.mixed, sjlabelled, RColorBrewer, 
+               texreg, car, ggeffects, misty, optimx, marginaleffects)
 
 options(scipen=999)
 rm(list = ls())
@@ -18,7 +18,21 @@ rm(list = ls())
 load("output/db-proc.RData")
 
 names(db)
-sapply(db, class)
+glimpse(db)
+
+
+#db <- db %>% 
+#  mutate(class = case_when(
+#    class %in% c("1.Capitalistas", 
+#                 "2.Pequeños empleadores") ~ "I. Clases capitalistas",
+#    class %in% c("3.Pequeña burguesia") ~ "II. Pequeña burguesia",
+#    class %in% c("4.Expertos directivos", 
+#                 "5.Expertos sin autoridad", 
+#                 "6.Supervisores calificados") ~ "III. Clases intermedias",
+#    class %in% c("7.Supervisores no calificados", 
+#                 "8.Trabajadores calificados", 
+#                 "9.Trabajadores no calificados") ~ "IV. Clases trabajadoras"))
+#
 
 # 3. Analysis -------------------------------------------------------------
 
@@ -26,11 +40,13 @@ sapply(db, class)
 
 # Null model
 model_0 <- lmer(psci ~ 1 + (1 | country_wave) + (1 | country), 
-                data = db, weights = factor, REML = T)
+                data = db, REML = T)
 
 performance::icc(model_0, by_group = T)
-## ICC Country = 0.17
+## ICC Country = 0.16
 ## ICC Country wave = 0.06
+
+screenreg(model_0)
 
 # Influence test
 inf_m0 <- influence(model_0, group = "country")
@@ -46,54 +62,61 @@ plot(inf_m0, which="cook",
 # Influential countries: South Korea and Hungary. 
 # This are the two countries with the highest average PSCi in the sample.
 
+sjPlot::plot_model(model_0, 
+                   type = "re", 
+                   vline.color = "green",
+                   grid = F, 
+                   sort.est = "sort.all", 
+                   ci.lvl = .95, 
+                   colors = "#800080")
+
 
 # Model 1: Only Class
 model_1 <- lmer(psci ~ 1 + class + 
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
-# Model 2: Class + Union
-model_2 <- lmer(psci ~ 1 + class + union +
+# Model 2: Class + N1 controls
+model_2 <- lmer(psci ~ 1 + class + union + sex + (age)^2 +
+                  degree + ideology +
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
-# Model 3: Class + Union + Top10(BE|WE) + CorpAll + WAVE
-model_3 <- lmer(psci ~ 1 + class + union + 
+# Model 3: Class + N1 controls + Top10(BE|WE) + CorpAll + WAVE
+model_3 <- lmer(psci ~ 1 + class +  union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
-# Model 4: Class + Union + Top10(BE|WE) + CorpAll + WAVE + Controls N1 & N2
-model_4 <- lmer(psci ~ 1 + class + union + 
+# Model 4: Class + Top10(BE|WE) + CorpAll + WAVE + Controls N1 & N2
+model_4 <- lmer(psci ~ 1 + class + union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
-                  (c_age)^2 + sex + ideology +
                   gdp_be + gdp_we +
-                  #mean_socexpend + 
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
 # Model 5: Random slope class
-model_5 <- lmer(psci ~ 1 + class + union + 
+model_5 <- lmer(psci ~ 1 + class + union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
-                  (c_age)^2 + sex + ideology +
                   gdp_be + gdp_we +
-                  mean_socexpend + 
                   (1 + class| country_wave) +
-                  (1 + class| country), data = db, weights = factor, REML = T)
+                  (1 + class| country), data = db, REML = T)
 
 # Model 6: Cross level interactions 
-model_6 <- lmer(psci ~ 1 + class + union + 
+model_6 <- lmer(psci ~ 1 + class + union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
-                  (c_age)^2 + sex + ideology +
                   gdp_be + gdp_we +
-                  #mean_socexpend + 
                   top10_be*class + top10_we*class +
                   (1 + class| country_wave) +
-                  (1 + class| country), data = db, weights = factor, REML = T)
+                  (1 + class| country), data = db, REML = T)
 
 
 

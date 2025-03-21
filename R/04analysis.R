@@ -38,23 +38,28 @@ sjmisc::descr(db$psci)
 db <- db %>% 
   mutate(egp = factor(str_squish(as.character(egp))),
          egp = case_when(egp %in% c("I Service class I", 
-                                    "II Service class II") ~ "Service class (I+II)",
+                                    "II Service class II") ~ "Clase servicios (I+II)",
                          egp %in% c("III.a Routine non-manual, higher grade",
                                     "III.b Routine non-manual, lower grade",
                                     "IV.a Self-employed with employees",
                                     "IV.b Self-employed with no empoyees",
-                                    "IV.c Self-employed Farmers etc") ~ "Intermediate class (III+IV)",
+                                    "IV.c Self-employed Farmers etc") ~ "Clase intermedia (III+IV)",
                          egp %in% c("V Manual supervisors/Lower grade technicians",
                                     "VI Skilled workers",
                                     "VII.a Unskilled workers",
-                                    "VII.b Farm labours") ~ "Working class (V+VI+VII)"),
-         egp = factor(egp, levels = c("Working class (V+VI+VII)",
-                                      "Intermediate class (III+IV)",
-                                      "Service class (I+II)")))
+                                    "VII.b Farm labours") ~ "Clase trabajadora (V+VI+VII)"),
+         egp = factor(egp, levels = c("Clase servicios (I+II)",
+                                      "Clase intermedia (III+IV)",
+                                      "Clase trabajadora (V+VI+VII)")))
 
 
 sum(is.na(db))
 colSums(is.na(db))
+
+db <- db %>% 
+  select(1:11, egp, psci, top10_be, top10_we, mean_corp_all,
+         gdp_be, gdp_we, starts_with("conflict")) %>% 
+  na.omit()
 
 # 3. Analysis -------------------------------------------------------------
 
@@ -62,67 +67,14 @@ formatter <- function(...){
   function(x) format(round(x, 1), ...)
 }
 
-db %>% 
-     group_by(country, year) %>% 
-  summarise(promedio = round(mean(psci), digits = 1)) %>% 
-  ggplot(aes(x = year, y = promedio)) +
-  geom_line(aes(group = country), color = "#e34e0e") +
-  geom_point(aes(group = country), color = "#e34e0e") +
-  scale_x_continuous(breaks=seq(1999, 2019, 10)) +
-  scale_y_continuous(labels = formatter(nsmall = 1)) +
-  geom_hline(aes(yintercept = 3.8), linetype = "dashed", color = "grey30") +
-  labs(x = "Año", 
-       y = "Promedio PSCi")+
-  facet_wrap(.~country, ncol = 5, scales = "fixed")
-
-conf <- db %>% select(starts_with("conflict"), country) %>% 
-  mutate_at(vars(starts_with("conflict")), ~ if_else(. %in% c(0,1),0,1))
-
-rp <- conf %>% select(country, conflict_rp) %>% 
-  mutate(filtro = if_else(conflict_rp == 1, "rp", "No")) %>% 
-  group_by(country, filtro) %>% 
-  summarise(total = n()) %>% 
-  mutate(prop = prop.table(total)*100) %>% 
-  filter(filtro == "rp") %>% select(everything(), -total)
-
-mw <- conf %>% select(country, conflict_mw) %>% 
-  mutate(filtro = if_else(conflict_mw == 1, "mw", "No")) %>% 
-  group_by(country, filtro) %>% 
-  summarise(total = n()) %>% 
-  mutate(prop = prop.table(total)*100) %>% 
-  filter(filtro == "mw") %>% select(everything(), -total)
-
-wcmc <- conf %>% select(country, conflict_wcmc) %>% 
-  mutate(filtro = if_else(conflict_wcmc == 1, "wcmc", "No")) %>% 
-  group_by(country, filtro) %>% 
-  summarise(total = n()) %>% 
-  mutate(prop = prop.table(total)*100) %>% 
-  filter(filtro == "wcmc") %>% select(everything(), -total)
-
-conf_df <- rbind(rp,mw,wcmc)
-
-conf_df %>% 
-  ggplot(aes(x = prop, y = fct_reorder2(`country`, filtro, prop, .desc = T), group=filtro))+
-  geom_point(aes(shape=filtro, color=filtro), size = 2.5)+
-  scale_shape_manual(values=c(19, 17, 18))+
-  scale_color_manual(values = c("#00477b", "#8300a1", "#e34e0e"))+
-  coord_cartesian(xlim = c(0,100))+
-  scale_x_continuous(labels = function(prop){paste0(prop, "%")})+
-  labs(title = NULL,
-       y = NULL,
-       x = "Proporción intensidad conflictos",
-       color = "Tipo conflicto",
-       shape = "Tipo conflicto")+
-  theme_minimal()
-  
 # 3.1. Multilevel hybrid models ----
 
 # Null model
 model_0 <- lmer(psci ~ 1 + (1 | country_wave) + (1 | country), 
-                data = db, weights = factor, REML = T)
+                data = db, REML = T)
 
 performance::icc(model_0, by_group = T)
-## ICC Country = 0.17
+## ICC Country = 0.16
 ## ICC Country wave = 0.06
 
 # Influence test
@@ -139,59 +91,68 @@ plot(inf_m0, which="cook",
 # Influential countries: South Korea and Hungary. 
 # This are the two countries with the highest average PSCi in the sample.
 
+sjPlot::plot_model(model_0, 
+                   type = "re", 
+                   vline.color = "green",
+                   grid = F, 
+                   sort.est = "sort.all", 
+                   ci.lvl = .95, 
+                   colors = "#800080")
+
+
 # Model 1: Only Class
 model_1 <- lmer(psci ~ 1 + egp + 
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
-# Model 2: Class + Union
-model_2 <- lmer(psci ~ 1 + egp + union +
+# Model 2: Class + N1 controls
+model_2 <- lmer(psci ~ 1 + egp + union + sex + (age)^2 +
+                  degree + ideology +
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
-# Model 3: Class + Union + Individual controls
-model_3 <- lmer(psci ~ 1 + egp + union + 
-                  sex + (c_age)^2 + ideology +
-                  (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
-
-# Model 4: Class + Union + Individual controls + Top10(BE|WE) + CorpAll + WAVE
-model_4 <- lmer(psci ~ 1 + egp + union + 
-                  sex + (c_age)^2 + ideology + 
+# Model 3: Class + N1 controls + Top10(BE|WE) + CorpAll + WAVE
+model_3 <- lmer(psci ~ 1 + egp +  union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
-# Model 5: Class + Union + Individual controls + Top10(BE|WE) + CorpAll + WAVE + GDP (BE|WE)
-model_5 <- lmer(psci ~ 1 + egp + union + 
-                  sex + (c_age)^2 + ideology + 
+# Model 4: Class + Top10(BE|WE) + CorpAll + WAVE + Controls N1 & N2
+model_4 <- lmer(psci ~ 1 + egp + union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
                   gdp_be + gdp_we +
                   (1 | country_wave) +
-                  (1 | country), data = db, weights = factor, REML = T)
+                  (1 | country), data = db, REML = T)
 
-# Model 6: Random slope class
-model_6 <- lmer(psci ~ 1 + egp + union + 
-                  sex + (c_age)^2 + ideology + 
+# Model 5: Random slope class
+model_5 <- lmer(psci ~ 1 + egp + union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
                   gdp_be + gdp_we +
                   (1 + egp| country_wave) +
-                  (1 + egp| country), data = db, weights = factor, REML = T)
+                  (1 + egp| country), data = db, REML = T)
 
-# Model 7: Cross level interactions 
-model_7 <- lmer(psci ~ 1 + egp + union + 
-                  sex + (c_age)^2 + ideology + 
+anova(model_4, model_5)
+
+# Model 6: Cross level interactions 
+model_6 <- lmer(psci ~ 1 + egp + union + sex + (age)^2 +
+                  degree + ideology +
                   top10_be + top10_we +
                   mean_corp_all + wave +
                   gdp_be + gdp_we +
                   top10_be*egp + top10_we*egp +
                   (1 + egp| country_wave) +
-                  (1 + egp| country), data = db, weights = factor, REML = T)
+                  (1 + egp| country), data = db, REML = T)
 
-screenreg(list(model_3,model_5,model_7))
+res_fit1 <- anova(model_4, model_5)
 
-
+save(
+  model_0, model_1, model_2, model_3, model_4, model_5, model_6, res_fit1,
+  file = here("output/hybrid_models.RData")
+)
 

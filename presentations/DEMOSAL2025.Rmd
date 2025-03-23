@@ -97,6 +97,34 @@ formatter <- function(...){
   function(x) format(round(x, 1), ...)
 }
 
+varianzas_N <- as.data.frame(VarCorr(model_0))
+varianzas_N
+var_N_n1 <- varianzas_N$vcov[3]
+var_N_n2 <- varianzas_N$vcov[1]
+var_N_n3 <- varianzas_N$vcov[2]
+
+icc_pais_ano <- var_N_n2 /(var_N_n1 + var_N_n2 + var_N_n3)
+icc_pais_ano
+icc_pais <- var_N_n3 /(var_N_n1 + var_N_n2 + var_N_n3)
+icc_pais
+var_N_n1 /(var_N_n1 + var_N_n2 + var_N_n3)
+
+varianzas_C <- as.data.frame(VarCorr(model_4))
+var_C_n1 <- varianzas_C$vcov[3]; var_C_n1
+var_C_n2 <- varianzas_C$vcov[1]; var_C_n2
+var_C_n3 <- varianzas_C$vcov[2]; var_C_n3
+
+#Varianza explicada n1
+r2_n1 <- (var_N_n1 - var_C_n1)/var_N_n1
+r2_n1
+
+#Varianza explicada n2
+r2_n2 <- (var_N_n2 - var_C_n2)/var_N_n2
+r2_n2
+
+#Varianza explicada n3
+r2_n3 <- (var_N_n3 - var_C_n3)/var_N_n3
+r2_n3
 
 
 
@@ -349,7 +377,7 @@ individuos (nivel 1), anidados en 58 unidades países-años o encuestas (nivel 2
 
 - En estos modelos: cada encuestado/individuo (nivel 1) es observado en un país específico y en un momento específico (nivel 2), y cada año-país es una única observación de un país (nivel 3) que se observa repetidas veces .tiny[*(Fairbrother, 2014; Schmidt-Catran & Fairbrother, 2016)*]
 
-- Modela la estructura de efectos aleatorios descomponiendo los efectos transverales _(between)_ y longitudinales dentro _(within)_ de los países
+- Modela la estructura de efectos aleatorios descomponiendo los efectos _entre_ países (transversales) y _dentro_ de los países (longitudinal)
 
 Formalmente:
 
@@ -428,8 +456,10 @@ _Controles_
 
 
 .center[
-![:scale 80%](images/figure03.png)
+![:scale 83%](images/desc11.png)
 ]
+
+
 
 ---
 ### Modelos - variación percepción de conflicto
